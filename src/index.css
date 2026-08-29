@@ -1,0 +1,101 @@
+:root {
+  --bg-color: #0f172a;
+  --card-bg: #1e293b;
+  --accent: #3b82f6;
+  --success: #22c55e;
+  --danger: #ef4444;
+  --text: #f8fafc;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg-color);
+  color: var(--text);
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+}
+
+main {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: first baseline;
+  margin-bottom: 1rem;
+}
+
+.auth-card,
+.card {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.auth-card {
+  max-width: 400px;
+  margin: 4rem auto;
+}
+
+input,
+select,
+button {
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  border: 1px solid #334155;
+  background: var(--bg-color);
+  color: #fff;
+  margin-right: 0.5rem;
+}
+
+button {
+  background: var(--accent);
+  cursor: pointer;
+  border: none;
+}
+button.logout-btn {
+  background: #475569;
+}
+
+.inline-form {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.topdown-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.monitor-card {
+  background: var(--card-bg);
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 5px solid #64748b;
+}
+
+.monitor-card.up {
+  border-left-color: var(--success);
+}
+.monitor-card.down {
+  border-left-color: var(--danger);
+}
+.error-badge {
+  background: var(--danger);
+  padding: 0.5rem;
+  border-radius: 4px;
+}
