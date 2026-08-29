@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { apiFetch, setToken, removeToken, getToken } from "../api";
+import { apiFetch, removeToken, getToken } from "../api";
 
 export function Dashboard() {
   const [monitors, setMonitors] = useState({});
@@ -7,6 +7,12 @@ export function Dashboard() {
   const [url, setUrl] = useState("");
   const [type, setType] = useState("HTTP");
   const [port, setPort] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [chatId, setChatId] = useState("");
+  const [message, setMessage] = useState("");
+  const [showToast, setShowToast] = useState(false);
+  const [toastType, setToastType] = useState("");
 
   const loadMonitors = async () => {
     const data = await apiFetch("/monitors");
@@ -33,7 +39,7 @@ export function Dashboard() {
 
   const handleAddMonitor = async (e) => {
     e.preventDefault();
-    await apiFetch("/monitors", {
+    const resp = await apiFetch("/monitors", {
       method: "POST",
       body: JSON.stringify({
         name,
@@ -42,10 +48,69 @@ export function Dashboard() {
         port: Number(port) ? Number(port) : null,
       }),
     });
+
+    if (resp.success) {
+      setToastType("success");
+      setMessage("Monitor added successfuly");
+    } else {
+      setToastType("error");
+      setMessage(resp.error ? resp.error : "Failed to add monitor");
+    }
+
+    setShowToast(true);
+
+    setTimeout(() => {
+      setShowToast(false);
+    }, 2000);
+
+    setTimeout(() => {
+      setMessage("");
+      setToastType("");
+    }, 2500);
+
     setName("");
     setUrl("");
+    setPort("");
     setType("HTTP");
     loadMonitors();
+  };
+
+  const handleAddRecipient = async (e) => {
+    e.preventDefault();
+    const resp = await apiFetch("/recipients", {
+      method: "POST",
+      body: JSON.stringify({
+        name: username,
+        password,
+        chat_id: chatId,
+      }),
+    });
+
+    if (resp.success) {
+      setToastType("success");
+      setMessage("Recipient added successfuly");
+    } else {
+      setToastType("error");
+      setMessage(resp.error ? resp.error : "Failed to add recipient");
+    }
+
+    setShowToast(true);
+
+    setTimeout(() => {
+      setShowToast(false);
+    }, 2000);
+
+    setTimeout(() => {
+      setMessage("");
+      setToastType("");
+    }, 2500);
+
+    const modal = document.getElementById("formModal");
+    modal.close();
+
+    setUsername("");
+    setPassword("");
+    setChatId("");
   };
 
   return (
@@ -54,7 +119,14 @@ export function Dashboard() {
         <h1>NetStatus Operations</h1>
 
         <div className="actionButtons">
-          <button>Add Recipient</button>
+          <button
+            onClick={() => {
+              const modal = document.getElementById("formModal");
+              modal.showModal();
+            }}
+          >
+            Add Recipient
+          </button>
           <button
             className="logout-btn"
             onClick={() => {
@@ -131,6 +203,59 @@ export function Dashboard() {
           </div>
         ))}
       </section>
+
+      {/** Add recipient form */}
+      <dialog id="formModal">
+        <form
+          onSubmit={handleAddRecipient}
+          className="topdown-form"
+          method="dialog"
+        >
+          <h3>Add Recipient</h3>
+          <input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="One-time password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <input
+            type="number"
+            placeholder="Telegram chat ID"
+            value={chatId}
+            onChange={(e) => setChatId(e.target.value)}
+            required
+          />
+          <div className="actions">
+            <button
+              className="btn-cancel"
+              type="button"
+              onClick={(e) => {
+                const modal = document.getElementById("formModal");
+                modal.close();
+              }}
+            >
+              Cancel
+            </button>
+            <button className="btn-submit" type="submit">
+              Add
+            </button>
+          </div>
+        </form>
+      </dialog>
+      <div
+        id="toastNotification"
+        className={`notification ${showToast ? "show" : ""} ${toastType}`}
+      >
+        {message}
+      </div>
     </div>
   );
 }

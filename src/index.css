@@ -99,3 +99,68 @@ button.logout-btn {
   padding: 0.5rem;
   border-radius: 4px;
 }
+
+dialog div.actions {
+  display: flex;
+}
+
+dialog div.actions button {
+  flex: 1;
+}
+
+dialog {
+  border: none;
+  border-radius: 8px;
+  padding: 1.5rem;
+  width: 350px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.btn-submit {
+  background-color: #28a745;
+  color: white;
+}
+.btn-cancel {
+  background-color: #dc3545;
+  color: white;
+}
+
+/* Toast Notification Box */
+.notification {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px); /* Centered but pushed down slightly */
+  background-color: #333;
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 4px;
+  font-size: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+  /* Smooth transition animations */
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform 0.5s ease,
+    opacity 0.5s ease;
+  z-index: 9999; /* Ensure it floats above everything */
+}
+
+/* Modifier classes for color coding */
+.notification.success {
+  background-color: #28a745;
+}
+.notification.error {
+  background-color: #dc3545;
+}
+
+/* Active class applied by JavaScript */
+.notification.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0); /* Slides up to its final position */
+}

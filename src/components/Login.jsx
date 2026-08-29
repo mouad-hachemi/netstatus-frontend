@@ -21,9 +21,12 @@ export function Login({ onLoginSuccess }) {
         onLoginSuccess();
       } else {
         setError(data.error || "Login failed");
+        setPassword("");
       }
     } catch (error) {
       console.log(error);
+      setPassword("");
+      setUsername("");
       setError("Network error connecting to server");
     }
   };
