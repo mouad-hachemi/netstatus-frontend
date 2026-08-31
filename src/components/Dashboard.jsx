@@ -34,6 +34,14 @@ export function Dashboard() {
         }
       } catch (error) {}
     };
+
+    ws.onclose = (event) => {
+      if (event.code === 4003) {
+        removeToken();
+        window.location.reload();
+      }
+    };
+
     return () => ws.close();
   }, []);
 
@@ -77,10 +85,10 @@ export function Dashboard() {
 
   const handleAddRecipient = async (e) => {
     e.preventDefault();
-    const resp = await apiFetch("/recipients", {
+    const resp = await apiFetch("/auth/register", {
       method: "POST",
       body: JSON.stringify({
-        name: username,
+        username,
         password,
         chat_id: chatId,
       }),
@@ -160,8 +168,9 @@ export function Dashboard() {
           <select
             value={type}
             onChange={(e) => {
+              const newType = e.target.value;
               setType(e.target.value);
-              if (type === "TCP" && port) {
+              if (newType !== "TCP" && port) {
                 setPort("");
               }
             }}
