@@ -18,7 +18,7 @@ export function Login({ onLoginSuccess }) {
 
       if (data.success && data.token) {
         setToken(data.token);
-        onLoginSuccess();
+        onLoginSuccess({ firstLogin: data.firstLogin });
       } else {
         setError(data.error || "Login failed");
         setPassword("");

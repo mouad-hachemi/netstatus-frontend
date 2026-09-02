@@ -229,9 +229,13 @@ export function Dashboard() {
             required
           />
           <input
-            type="password"
+            type="text"
             placeholder="One-time password"
             value={password}
+            onClick={(e) => {
+              const tempPass = Math.random().toString(16).slice(2, 10);
+              setPassword(tempPass);
+            }}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
