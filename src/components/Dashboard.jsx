@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { apiFetch, removeToken, getToken } from "../api";
+import { MonitorCard } from "./MonitorCard";
 
-export function Dashboard() {
+export function Dashboard({ onSelectMonitor, onDeleteMonitor }) {
   const [monitors, setMonitors] = useState({});
   const [name, setName] = useState("");
   const [url, setUrl] = useState("");
@@ -194,23 +195,30 @@ export function Dashboard() {
 
       {/** Real time status grid. */}
       <section className="grid">
-        {Object.entries(monitors).map(([hostName, stats]) => (
-          <div
-            key={hostName}
-            className={`monitor-card ${stats.is_up ? "up" : "down"}`}
-          >
-            <h3>{hostName}</h3>
-            <div className="status-indicator">
-              Status: <strong>{stats.is_up ? "ONLINE" : "OFFLINE"}</strong>
-            </div>
-            <p>
-              Avg Latency:{" "}
-              {stats.avg_latency
-                ? `${Math.round(stats.avg_latency)} ms`
-                : `N/A`}
-            </p>
-          </div>
-        ))}
+        {Object.entries(monitors).map(([hostName, stats]) => {
+          // Construct monitor payload expected by MonitorCard
+          const monitorObj = {
+            id: stats.monitor_id || hostName,
+            name: hostName,
+            type: stats.type || "HTTP",
+          };
+
+          return (
+            <MonitorCard
+              key={stats.monitor_id || hostName}
+              monitor={monitorObj}
+              statusData={{
+                isUp: stats.is_up,
+                latency: stats.avg_latency
+                  ? Math.round(stats.avg_latency)
+                  : null,
+                history: stats.history || [],
+              }}
+              onSelect={onSelectMonitor}
+              onDelete={onDeleteMonitor}
+            />
+          );
+        })}
       </section>
 
       {/** Add recipient form */}
