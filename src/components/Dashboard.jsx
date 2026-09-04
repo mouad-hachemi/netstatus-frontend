@@ -210,6 +210,7 @@ export function Dashboard({ onSelectMonitor, onDeleteMonitor }) {
             id: stats.monitor_id || hostName,
             name: hostName,
             type: stats.type || "HTTP",
+            port: stats.port,
           };
 
           return (

@@ -22,6 +22,7 @@ export function MonitorCard({ monitor, statusData, onSelect, onDelete }) {
     ? `${statusData.latency}ms`
     : "OFFLINE";
   const checkType = monitor.type || "HTTP";
+  const port = monitor.port;
 
   const generateSparkline = (points) => {
     const min = Math.min(...points);
@@ -43,7 +44,7 @@ export function MonitorCard({ monitor, statusData, onSelect, onDelete }) {
     <div className="monitor-card" onClick={() => onSelect(monitor.id)}>
       {/* Left Column: Metric & Info */}
       <div className="card-left">
-        <div className="type-badge">{checkType}</div>
+        <div className="type-badge">{`${checkType}${port ? ":" + port : ""}`}</div>
         <div className="metric-large">{currentLatency}</div>
         <div className="device-name">{monitor.name}</div>
       </div>
