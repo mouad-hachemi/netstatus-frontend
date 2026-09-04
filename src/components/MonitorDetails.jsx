@@ -48,7 +48,7 @@ export function MonitorDetails({ monitorId, onBack }) {
               details.logs.map((log, idx) => (
                 <tr key={idx}>
                   <td className="timestamp-cell">
-                    {new Date(log.timestamp).toLocaleString()}
+                    {new Date(log.timestamp * 1000).toLocaleString()}
                   </td>
                   <td>
                     <span

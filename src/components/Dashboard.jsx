@@ -86,7 +86,7 @@ export function Dashboard({ onSelectMonitor, onDeleteMonitor }) {
     loadMonitors();
   };
 
-  const handleAddRecipient = async (e) => {
+  const handleAddModerator = async (e) => {
     e.preventDefault();
     const resp = await apiFetch("/auth/register", {
       method: "POST",
@@ -136,7 +136,7 @@ export function Dashboard({ onSelectMonitor, onDeleteMonitor }) {
               modal.showModal();
             }}
           >
-            Add Recipient
+            Add Moderator
           </button>
           <button
             className="logout-btn"
@@ -234,11 +234,11 @@ export function Dashboard({ onSelectMonitor, onDeleteMonitor }) {
       {/** Add recipient form */}
       <dialog id="formModal">
         <form
-          onSubmit={handleAddRecipient}
+          onSubmit={handleAddModerator}
           className="topdown-form"
           method="dialog"
         >
-          <h3>Add Recipient</h3>
+          <h3>Add Moderator</h3>
           <input
             type="text"
             placeholder="Username"
