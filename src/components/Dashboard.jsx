@@ -8,6 +8,7 @@ export function Dashboard({ onSelectMonitor, onDeleteMonitor }) {
   const [url, setUrl] = useState("");
   const [type, setType] = useState("HTTP");
   const [port, setPort] = useState("");
+  const [freq, setFreq] = useState();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [chatId, setChatId] = useState("");
@@ -54,6 +55,7 @@ export function Dashboard({ onSelectMonitor, onDeleteMonitor }) {
         name,
         url,
         type,
+        freq,
         port: Number(port) ? Number(port) : null,
       }),
     });
@@ -182,11 +184,18 @@ export function Dashboard({ onSelectMonitor, onDeleteMonitor }) {
           </select>
 
           <input
-            disabled={type !== "TCP" ? true : false}
+            disabled={type !== "TCP"}
             type="number"
             placeholder="Port"
             value={port}
             onChange={(e) => setPort(e.target.value)}
+          />
+
+          <input
+            type="number"
+            placeholder="Frequency in seconds (default 60)"
+            value={freq}
+            onChange={(e) => setFreq(e.target.value)}
           />
 
           <button type="submit">Add Monitor</button>
