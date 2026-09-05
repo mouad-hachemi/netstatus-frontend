@@ -25,8 +25,9 @@ export function Dashboard({ onSelectMonitor, onDeleteMonitor }) {
   useEffect(() => {
     loadMonitors();
 
+    const WSS_URL = import.meta.env.VITE_WS_URL;
     const token = getToken();
-    const ws = new WebSocket(`ws://localhost:8080?token=${token}`);
+    const ws = new WebSocket(`${WSS_URL}?token=${token}`);
 
     ws.onmessage = (event) => {
       try {
